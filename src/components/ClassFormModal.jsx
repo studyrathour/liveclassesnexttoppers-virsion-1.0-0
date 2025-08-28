@@ -9,8 +9,6 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
     thumbnail: '',
     scheduledstarttime: '',
     autostart: false,
-    autoend: false,
-    autoendduration: 120,
   });
 
   useEffect(() => {
@@ -22,14 +20,12 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
         thumbnail: classItem.thumbnail || '',
         scheduledstarttime: classItem.scheduledstarttime ? new Date(classItem.scheduledstarttime).toISOString().slice(0, 16) : '',
         autostart: classItem.autostart || false,
-        autoend: classItem.autoend || false,
-        autoendduration: classItem.autoendduration || 120,
       });
     } else {
       // Reset for new class
       setFormData({
         title: '', batchname: '', streamlink: '', thumbnail: '',
-        scheduledstarttime: '', autostart: false, autoend: false, autoendduration: 120,
+        scheduledstarttime: '', autostart: false,
       });
     }
   }, [classItem, isEditing]);
@@ -76,16 +72,6 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
             <input type="checkbox" id="autostart" name="autostart" checked={formData.autostart} onChange={handleChange} className="w-4 h-4 text-blue-600 bg-gray-700/60 border-gray-600/50 rounded backdrop-blur-lg" />
             <label htmlFor="autostart" className="text-sm text-gray-300">Auto-start at scheduled time</label>
           </div>
-          <div className="flex items-center space-x-3">
-            <input type="checkbox" id="autoend" name="autoend" checked={formData.autoend} onChange={handleChange} className="w-4 h-4 text-blue-600 bg-gray-700/60 border-gray-600/50 rounded backdrop-blur-lg" />
-            <label htmlFor="autoend" className="text-sm text-gray-300">Auto-end after duration</label>
-          </div>
-          {formData.autoend && (
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Auto-end Duration (minutes)</label>
-              <input type="number" name="autoendduration" value={formData.autoendduration} onChange={handleChange} min="30" max="480" className="w-full p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg" />
-            </div>
-          )}
         </div>
         <div className="flex justify-end space-x-3 mt-6">
           <button onClick={onClose} className="px-4 py-2 text-gray-300 border border-gray-600/50 rounded-xl hover:bg-gray-800/40 transition-colors backdrop-blur-lg">Cancel</button>

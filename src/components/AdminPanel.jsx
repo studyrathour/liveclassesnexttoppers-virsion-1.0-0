@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Trash2, Play, Square, Edit, FileSpreadsheet, LogOut, PlusCircle } from 'lucide-react';
 import * as XLSX from 'xlsx';
-import { format, addHours } from 'date-fns';
+import { format, addMinutes } from 'date-fns';
 import { supabase } from '../supabaseClient';
 import ClassFormModal from './ClassFormModal';
 import SkeletonTable from './SkeletonTable';
@@ -88,13 +88,11 @@ const AdminPanel = () => {
           m3u8link: extractM3U8Link(row.streamLink || ''),
           defaultquality: extractVideoQuality(extractM3U8Link(row.streamLink || '')),
           status: 'scheduled',
-          starttime: new Date().toISOString(),
+          starttime: null,
           scheduledstarttime: null,
           endtime: null,
           autoendtime: null,
           autostart: false,
-          autoend: false,
-          autoendduration: 120
         }));
 
         if (replace) {
@@ -127,8 +125,6 @@ const AdminPanel = () => {
       defaultquality: extractVideoQuality(extractM3U8Link(formData.streamlink)),
       scheduledstarttime: formData.scheduledstarttime ? new Date(formData.scheduledstarttime).toISOString() : null,
       autostart: formData.autostart,
-      autoend: formData.autoend,
-      autoendduration: parseInt(formData.autoendduration),
     };
 
     let error;
@@ -141,7 +137,7 @@ const AdminPanel = () => {
     } else {
       const { error: insertError } = await supabase
         .from('classes')
-        .insert({ ...classData, status: 'scheduled', starttime: new Date().toISOString() });
+        .insert({ ...classData, status: 'scheduled' });
       error = insertError;
     }
 
@@ -155,15 +151,15 @@ const AdminPanel = () => {
   };
 
   const startLive = async (classId) => {
-    const classToUpdate = liveClasses.find(c => c.id === classId);
-    if (!classToUpdate) return;
+    const startTime = new Date();
+    const endTime = addMinutes(startTime, 105);
 
     const { error } = await supabase
       .from('classes')
       .update({ 
         status: 'live', 
-        starttime: new Date().toISOString(),
-        autoendtime: classToUpdate.autoend ? addHours(new Date(), classToUpdate.autoendduration / 60).toISOString() : null
+        starttime: startTime.toISOString(),
+        autoendtime: endTime.toISOString()
       })
       .eq('id', classId);
 
@@ -337,7 +333,6 @@ const AdminPanel = () => {
                           <div>
                             <div>{format(new Date(classItem.scheduledstarttime), 'MMM dd, hh:mm a')}</div>
                             {classItem.autostart && <div className="text-xs text-blue-400">Auto-start</div>}
-                            {classItem.autoend && <div className="text-xs text-red-400">Auto-end: {classItem.autoendduration}m</div>}
                           </div>
                         ) : (
                           <button onClick={() => openEditModal(classItem)} className="text-blue-400 hover:text-blue-300 text-xs">Set Schedule</button>

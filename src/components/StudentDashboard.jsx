@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Clock, CheckCircle, Users, Calendar, ExternalLink } from 'lucide-react';
-import { format, isAfter, isBefore } from 'date-fns';
+import { format, isAfter, isBefore, addMinutes } from 'date-fns';
 import CountdownTimer from './CountdownTimer';
 import { supabase } from '../supabaseClient';
 import SkeletonCard from './SkeletonCard';
@@ -30,24 +30,58 @@ const StudentDashboard = () => {
   }, []);
 
   const loadLiveClasses = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
+    if (!loading) setLoading(true);
+
+    const { data: initialData, error: fetchError } = await supabase
       .from('classes')
       .select('*')
       .order('scheduledstarttime', { ascending: false });
 
-    if (error) {
-      console.error('Error fetching classes:', error);
-    } else {
-      const now = new Date();
-      const updatedClasses = data.map(cls => {
-        if (cls.status === 'scheduled' && cls.autostart && cls.scheduledstarttime && isBefore(new Date(cls.scheduledstarttime), now)) {
-          return { ...cls, status: 'live' };
-        }
-        return cls;
-      });
-      setLiveClasses(updatedClasses);
+    if (fetchError) {
+      console.error('Error fetching classes:', fetchError);
+      setLoading(false);
+      return;
     }
+
+    const now = new Date();
+    const classesToAutoStart = initialData.filter(cls =>
+      cls.status === 'scheduled' &&
+      cls.autostart &&
+      cls.scheduledstarttime &&
+      isBefore(new Date(cls.scheduledstarttime), now)
+    );
+
+    if (classesToAutoStart.length > 0) {
+      const updates = classesToAutoStart.map(cls => {
+        const startTime = new Date(cls.scheduledstarttime);
+        return supabase
+          .from('classes')
+          .update({
+            status: 'live',
+            starttime: startTime.toISOString(),
+            autoendtime: addMinutes(startTime, 105).toISOString(),
+          })
+          .eq('id', cls.id);
+      });
+
+      await Promise.all(updates);
+      
+      // Re-fetch after updates to get the latest state
+      const { data: finalData, error: refetchError } = await supabase
+        .from('classes')
+        .select('*')
+        .order('scheduledstarttime', { ascending: false });
+      
+      if (refetchError) {
+        console.error('Error re-fetching classes:', refetchError);
+        setLiveClasses(initialData); // Fallback to initial data on refetch error
+      } else {
+        setLiveClasses(finalData);
+      }
+    } else {
+      setLiveClasses(initialData);
+    }
+
     setLoading(false);
   };
 
@@ -61,16 +95,16 @@ const StudentDashboard = () => {
     return {
       live: liveClasses.filter(cls => {
         const startTime = new Date(cls.starttime);
-        const endTime = cls.autoendtime ? new Date(cls.autoendtime) : new Date(startTime.getTime() + 2 * 60 * 60 * 1000);
-        return isBefore(startTime, now) && isAfter(endTime, now) && cls.status === 'live';
+        const endTime = cls.autoendtime ? new Date(cls.autoendtime) : null;
+        return cls.status === 'live' && isBefore(startTime, now) && (!endTime || isAfter(endTime, now));
       }),
       upcoming: liveClasses.filter(cls => {
         const startTime = new Date(cls.scheduledstarttime || cls.starttime);
         return isAfter(startTime, now) && cls.status === 'scheduled';
       }),
       completed: liveClasses.filter(cls => {
-        const endTime = cls.autoendtime ? new Date(cls.autoendtime) : new Date(new Date(cls.starttime).getTime() + 2 * 60 * 60 * 1000);
-        return (cls.autoendtime && isBefore(new Date(cls.autoendtime), now)) || cls.status === 'completed';
+        const endTime = cls.autoendtime ? new Date(cls.autoendtime) : null;
+        return cls.status === 'completed' || (endTime && isBefore(endTime, now));
       })
     };
   };
