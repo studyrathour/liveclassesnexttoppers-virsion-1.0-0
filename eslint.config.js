@@ -1,29 +1,31 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import pluginReactConfig from 'eslint-plugin-react/configs/recommended.js';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginReactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
+    plugins: {
+      'react': pluginReact,
+      'react-hooks': pluginReactHooks,
+      'react-refresh': pluginReactRefresh,
+    },
     languageOptions: {
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
         },
       },
-      globals: globals.browser,
-    },
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-      'react': pluginReactConfig.plugins.react,
+      globals: {
+        ...globals.browser,
+      },
     },
     rules: {
       ...pluginJs.configs.recommended.rules,
-      ...pluginReactConfig.rules,
-      ...reactHooks.configs.recommended.rules,
+      ...pluginReact.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
@@ -37,5 +39,14 @@ export default [
       },
     },
   },
-  { ignores: ['dist', 'eslint.config.js', 'postcss.config.js', 'tailwind.config.js', 'vite.config.js'] },
+  { 
+    ignores: [
+      'dist/', 
+      'node_modules/',
+      'eslint.config.js', 
+      'postcss.config.js', 
+      'tailwind.config.js', 
+      'vite.config.js'
+    ] 
+  },
 ];
