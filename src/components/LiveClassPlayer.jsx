@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings, Users, ExternalLink, Play } from 'lucide-react';
+import { ArrowLeft, Settings, Users, ExternalLink, Play, Video } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
 const LiveClassPlayer = () => {
@@ -46,8 +46,12 @@ const LiveClassPlayer = () => {
   const buildVideoUrl = (quality) => {
     if (!classData?.m3u8link) return '';
     
+    const prefix = classData.status === 'completed'
+      ? 'https://edumastervideoplarerwatch.netlify.app/rec/'
+      : 'https://edumastervideoplarerwatch.netlify.app/live/';
+      
     const updatedM3u8 = classData.m3u8link.replace(/index_\d+\.m3u8/, `index_${quality}.m3u8`);
-    return `https://edumastervideoplarerwatch.netlify.app/live/${encodeURIComponent(updatedM3u8)}`;
+    return `${prefix}${encodeURIComponent(updatedM3u8)}`;
   };
 
   const handleQualitySelect = (quality) => {
@@ -65,12 +69,12 @@ const LiveClassPlayer = () => {
   if (!classData) {
     return (
       <div className="max-w-4xl mx-auto text-center py-12">
-        <div className="backdrop-blur-xl bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
+        <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-2">Loading Class...</h2>
           <p className="text-gray-300 mb-4">If the class does not load, it may not exist.</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-blue-600/80 border border-blue-500/60 text-white px-6 py-3 rounded-xl hover:bg-blue-600/90 transition-all transform hover:scale-105 backdrop-blur-lg"
+            className="bg-blue-600/80 border border-blue-500/60 text-white px-6 py-3 rounded-xl hover:bg-blue-600/90 transition-all transform hover:scale-105 backdrop-blur-lg hover:shadow-glow-blue"
           >
             Back to Dashboard
           </button>
@@ -101,7 +105,7 @@ const LiveClassPlayer = () => {
               <span className={`px-3 py-1 rounded-full text-xs font-medium border backdrop-blur-lg ${
                 classData.status === 'live' 
                   ? 'bg-red-600/80 border-red-500/60 text-white shadow-lg shadow-red-500/25' 
-                  : 'bg-gray-700/60 border-gray-600/50 text-gray-300'
+                  : 'bg-green-600/80 border-green-500/60 text-white'
               }`}>
                 {classData.status === 'live' && (
                   <span className="flex items-center">
@@ -109,14 +113,20 @@ const LiveClassPlayer = () => {
                     LIVE
                   </span>
                 )}
-                {classData.status !== 'live' && classData.status}
+                {classData.status === 'completed' && (
+                  <span className="flex items-center">
+                    <Video className="w-3 h-3 mr-1.5"/>
+                    RECORDING
+                  </span>
+                )}
+                {classData.status !== 'live' && classData.status !== 'completed' && classData.status}
               </span>
             </div>
           </div>
           
           <button
             onClick={() => setShowQualityModal(true)}
-            className="flex items-center space-x-2 backdrop-blur-xl bg-gray-900/60 border border-gray-700/50 text-gray-300 px-4 py-3 rounded-xl hover:bg-gray-800/60 transition-colors"
+            className="flex items-center space-x-2 backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 text-gray-300 px-4 py-3 rounded-xl hover:bg-gray-800/60 transition-colors"
           >
             <Settings className="h-4 w-4" />
             <span>Quality: {getQualityOptions().find(q => q.value === selectedQuality)?.label}</span>
@@ -124,16 +134,16 @@ const LiveClassPlayer = () => {
         </div>
       </div>
 
-      <div className="backdrop-blur-xl bg-gray-900/60 border border-gray-700/50 rounded-2xl overflow-hidden mb-6 shadow-2xl">
+      <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl overflow-hidden mb-6 shadow-2xl">
         <div className="aspect-video flex items-center justify-center">
           <div className="text-center p-8">
-            <div className="w-32 h-32 bg-gradient-to-br from-blue-600/60 to-red-600/60 border border-gray-600/50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl backdrop-blur-xl">
-              <Play className="h-16 w-16 text-white ml-2" />
+            <div className={`w-32 h-32 bg-gradient-to-br ${classData.status === 'completed' ? 'from-green-600/60 to-blue-600/60' : 'from-blue-600/60 to-red-600/60'} border border-gray-600/50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl backdrop-blur-xl`}>
+              {classData.status === 'completed' ? <Video className="h-16 w-16 text-white" /> : <Play className="h-16 w-16 text-white ml-2" />}
             </div>
             
-            <h2 className="text-2xl font-bold text-white mb-3">Ready to Watch</h2>
+            <h2 className="text-2xl font-bold text-white mb-3">{classData.status === 'completed' ? 'Recording Available' : 'Ready to Watch'}</h2>
             <p className="text-gray-300 mb-6 max-w-md mx-auto">
-              Click the button below to open the video player in a new tab. 
+              Click the button below to open the player in a new tab. 
               Selected quality: <span className="text-blue-400 font-semibold">
                 {getQualityOptions().find(q => q.value === selectedQuality)?.label}
               </span>
@@ -143,15 +153,15 @@ const LiveClassPlayer = () => {
               <button
                 onClick={openVideoPlayer}
                 disabled={!selectedQuality}
-                className="flex items-center space-x-2 bg-red-600/80 border border-red-500/60 text-white px-8 py-4 rounded-xl hover:bg-red-600/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg shadow-red-500/25 backdrop-blur-lg"
+                className={`flex items-center space-x-2 px-8 py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 backdrop-blur-lg ${classData.status === 'completed' ? 'bg-green-600/80 border-green-500/60 text-white hover:bg-green-600/90 shadow-lg shadow-green-500/25 hover:shadow-glow-green' : 'bg-red-600/80 border-red-500/60 text-white hover:bg-red-600/90 shadow-lg shadow-red-500/25 hover:shadow-glow-red'}`}
               >
                 <ExternalLink className="h-5 w-5" />
-                <span>Open Video Player</span>
+                <span>{classData.status === 'completed' ? 'Open Recording' : 'Open Video Player'}</span>
               </button>
               
               <button
                 onClick={() => setShowQualityModal(true)}
-                className="flex items-center space-x-2 backdrop-blur-xl bg-gray-900/60 border border-gray-700/50 text-gray-300 px-6 py-4 rounded-xl hover:bg-gray-800/60 transition-colors"
+                className="flex items-center space-x-2 backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 text-gray-300 px-6 py-4 rounded-xl hover:bg-gray-800/60 transition-colors"
               >
                 <Settings className="h-5 w-5" />
                 <span>Change Quality</span>
@@ -161,7 +171,7 @@ const LiveClassPlayer = () => {
         </div>
       </div>
 
-      <div className="backdrop-blur-xl bg-gray-900/60 border border-gray-700/50 rounded-2xl shadow-2xl p-6">
+      <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl shadow-2xl p-6">
         <h2 className="text-xl font-semibold text-white mb-4">Class Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
@@ -187,11 +197,11 @@ const LiveClassPlayer = () => {
                 {new Date(classData.starttime).toLocaleString()}
               </p>
             </div>
-            {classData.autoendtime && (
+            {classData.endtime && (
               <div>
-                <h3 className="font-medium text-gray-300 mb-1">Auto-End Time</h3>
+                <h3 className="font-medium text-gray-300 mb-1">End Time</h3>
                 <p className="text-white">
-                  {new Date(classData.autoendtime).toLocaleString()}
+                  {new Date(classData.endtime).toLocaleString()}
                 </p>
               </div>
             )}
@@ -206,8 +216,8 @@ const LiveClassPlayer = () => {
       </div>
 
       {showQualityModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="backdrop-blur-xl bg-gray-900/80 border border-gray-700/60 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="backdrop-blur-2xl bg-gray-900/80 border border-gray-700/60 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
             <h2 className="text-xl font-bold text-white mb-4">Select Video Quality</h2>
             <p className="text-gray-300 mb-6">Choose the video quality based on your internet connection:</p>
             
@@ -218,7 +228,7 @@ const LiveClassPlayer = () => {
                   onClick={() => handleQualitySelect(option.value)}
                   className={`w-full p-4 text-left rounded-xl border transition-all duration-300 transform hover:scale-105 backdrop-blur-lg ${
                     selectedQuality === option.value
-                      ? 'border-blue-500/60 bg-blue-600/40 shadow-lg shadow-blue-500/25'
+                      ? 'border-blue-500/60 bg-blue-600/40 shadow-glow-blue'
                       : 'border-gray-600/50 hover:border-gray-500/60 bg-gray-800/40'
                   }`}
                 >
@@ -248,10 +258,10 @@ const LiveClassPlayer = () => {
                   openVideoPlayer();
                 }}
                 disabled={!selectedQuality}
-                className="bg-blue-600/80 border border-blue-500/60 text-white px-6 py-3 rounded-xl hover:bg-blue-600/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 flex items-center space-x-2 shadow-lg shadow-blue-500/25 backdrop-blur-lg"
+                className={`text-white px-6 py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 flex items-center space-x-2 backdrop-blur-lg ${classData.status === 'completed' ? 'bg-green-600/80 border-green-500/60 hover:bg-green-600/90 shadow-lg shadow-green-500/25 hover:shadow-glow-green' : 'bg-blue-600/80 border-blue-500/60 hover:bg-blue-600/90 shadow-lg shadow-blue-500/25 hover:shadow-glow-blue'}`}
               >
                 <ExternalLink className="h-4 w-4" />
-                <span>Watch Now</span>
+                <span>{classData.status === 'completed' ? 'Watch Recording' : 'Watch Live'}</span>
               </button>
             </div>
           </div>

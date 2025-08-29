@@ -40,7 +40,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950">
-      <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+      <div className="absolute inset-0 bg-grid-pattern opacity-15"></div>
       <Router>
         <main className="relative z-10 container mx-auto px-4 py-8">
           <Routes>
