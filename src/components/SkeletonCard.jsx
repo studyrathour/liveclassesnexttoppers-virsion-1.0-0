@@ -2,13 +2,19 @@ import React from 'react';
 
 const SkeletonCard = () => {
   return (
-    <div className="backdrop-blur-xl bg-gray-900/60 border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden">
-      <div className="aspect-video bg-gray-800/80 animate-pulse"></div>
-      <div className="p-6">
-        <div className="h-5 bg-gray-700/60 rounded w-3/4 mb-4 animate-pulse"></div>
-        <div className="h-4 bg-gray-700/60 rounded w-1/2 mb-3 animate-pulse"></div>
-        <div className="h-4 bg-gray-700/60 rounded w-1/3 mb-6 animate-pulse"></div>
-        <div className="h-12 bg-gray-700/60 rounded-xl animate-pulse"></div>
+    <div className="lecture-card animate-pulse">
+      <div className="lecture-thumbnail bg-gray-700/60"></div>
+      <div className="lecture-content">
+        <div className="h-6 bg-gray-700/60 rounded-lg w-1/3 mb-5"></div>
+        <div className="h-7 bg-gray-700/60 rounded-lg w-full mb-3"></div>
+        <div className="h-7 bg-gray-700/60 rounded-lg w-4/5 mb-4"></div>
+        
+        <div className="space-y-3 mb-6">
+            <div className="h-10 bg-gray-700/60 rounded-lg w-full"></div>
+            <div className="h-10 bg-gray-700/60 rounded-lg w-full"></div>
+        </div>
+        
+        <div className="h-12 bg-gray-700/60 rounded-2xl w-full"></div>
       </div>
     </div>
   );

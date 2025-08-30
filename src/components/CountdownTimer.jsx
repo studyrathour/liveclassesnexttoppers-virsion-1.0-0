@@ -1,50 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { differenceInSeconds } from 'date-fns';
 
-const CountdownTimer = ({ targetTime }) => {
-  const [timeLeft, setTimeLeft] = useState(0);
+const CountdownTimer = ({ targetTime, onComplete }) => {
+  const timerRef = useRef(null);
+  const onCompleteCalledRef = useRef(false);
+
+  const calculateTimeLeft = React.useCallback(() => {
+    const now = new Date();
+    const target = new Date(targetTime);
+    const diff = differenceInSeconds(target, now);
+    return Math.max(0, diff);
+  }, [targetTime]);
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date();
-      const target = new Date(targetTime);
-      const diff = differenceInSeconds(target, now);
-      return Math.max(0, diff);
-    };
+    onCompleteCalledRef.current = false;
 
-    setTimeLeft(calculateTimeLeft());
-
-    const timer = setInterval(() => {
+    timerRef.current = setInterval(() => {
       const newTimeLeft = calculateTimeLeft();
       setTimeLeft(newTimeLeft);
-      
+
       if (newTimeLeft <= 0) {
-        clearInterval(timer);
+        clearInterval(timerRef.current);
+        if (onComplete && !onCompleteCalledRef.current) {
+          onCompleteCalledRef.current = true;
+          onComplete();
+        }
       }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [targetTime]);
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, [targetTime, onComplete, calculateTimeLeft]);
 
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    } else if (minutes > 0) {
-      return `${minutes}m ${secs}s`;
-    } else {
-      return `${secs}s`;
-    }
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const paddedHours = String(hours).padStart(2, '0');
+    const paddedMinutes = String(minutes).padStart(2, '0');
+    const paddedSeconds = String(seconds).padStart(2, '0');
+
+    return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
   };
 
   if (timeLeft <= 0) {
     return <span>Starting...</span>;
   }
 
-  return <span>Starts in {formatTime(timeLeft)}</span>;
+  return <span>{formatTime(timeLeft)}</span>;
 };
 
 export default CountdownTimer;

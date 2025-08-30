@@ -27,6 +27,9 @@ const createMockClient = () => ({
         single: () => Promise.resolve({ data: null, error: { message: "Supabase not connected" } }),
       }),
       order: () => Promise.resolve({ data: [], error: null }),
+      neq: () => ({
+        order: () => Promise.resolve({ data: [], error: null }),
+      }),
     }),
     insert: () => Promise.resolve({ error: { message: "Supabase not connected" } }),
     update: () => ({

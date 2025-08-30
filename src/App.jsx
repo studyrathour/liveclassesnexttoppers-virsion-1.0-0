@@ -30,8 +30,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-16 h-16 border-4 border-[var(--glass-border)] border-t-[var(--text-primary)] rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -39,36 +39,33 @@ function App() {
   const isAdminAuthenticated = !!session;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950">
-      <div className="absolute inset-0 bg-grid-pattern opacity-15"></div>
-      <Router>
-        <main className="relative z-10 container mx-auto px-4 py-8">
-          <Routes>
-            <Route 
-              path="/" 
-              element={<StudentDashboard />} 
-            />
-            <Route 
-              path="/admin-login" 
-              element={!isAdminAuthenticated ? <AdminLogin /> : <Navigate to="/admin" replace />} 
-            />
-            <Route 
-              path="/admin" 
-              element={
-                isAdminAuthenticated ? 
-                <AdminPanel /> : 
-                <Navigate to="/admin-login" replace />
-              } 
-            />
-            <Route 
-              path="/live/:classId" 
-              element={<LiveClassPlayer />} 
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-      </Router>
-    </div>
+    <Router>
+      <main className="relative z-10">
+        <Routes>
+          <Route 
+            path="/" 
+            element={<StudentDashboard />} 
+          />
+          <Route 
+            path="/admin-login" 
+            element={!isAdminAuthenticated ? <AdminLogin /> : <Navigate to="/admin" replace />} 
+          />
+          <Route 
+            path="/admin" 
+            element={
+              isAdminAuthenticated ? 
+              <AdminPanel /> : 
+              <Navigate to="/admin-login" replace />
+            } 
+          />
+          <Route 
+            path="/live/:classId" 
+            element={<LiveClassPlayer />} 
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </Router>
   );
 }
 
