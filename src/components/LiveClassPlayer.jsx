@@ -56,7 +56,7 @@ const LiveClassPlayer = () => {
 
   const handleQualitySelect = (quality) => {
     setSelectedQuality(quality);
-    setShowQualityModal(false);
+setShowQualityModal(false);
   };
 
   const openVideoPlayer = () => {
@@ -68,8 +68,8 @@ const LiveClassPlayer = () => {
 
   if (!classData) {
     return (
-      <div className="max-w-4xl mx-auto text-center py-12">
-        <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
+      <div className="max-w-4xl mx-auto text-center py-12 px-4">
+        <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] rounded-2xl p-8 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-2">Loading Class...</h2>
           <p className="text-gray-300 mb-4">If the class does not load, it may not exist.</p>
           <button
@@ -84,7 +84,7 @@ const LiveClassPlayer = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto p-4">
       <div className="mb-6">
         <button
           onClick={() => navigate('/')}
@@ -126,7 +126,7 @@ const LiveClassPlayer = () => {
           
           <button
             onClick={() => setShowQualityModal(true)}
-            className="flex items-center space-x-2 backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 text-gray-300 px-4 py-3 rounded-xl hover:bg-gray-800/60 transition-colors"
+            className="flex items-center space-x-2 backdrop-blur-xl bg-white/[.05] border border-white/[.1] text-gray-300 px-4 py-3 rounded-xl hover:bg-white/[.1] transition-colors"
           >
             <Settings className="h-4 w-4" />
             <span>Quality: {getQualityOptions().find(q => q.value === selectedQuality)?.label}</span>
@@ -134,10 +134,10 @@ const LiveClassPlayer = () => {
         </div>
       </div>
 
-      <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl overflow-hidden mb-6 shadow-2xl">
+      <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] rounded-2xl overflow-hidden mb-6 shadow-2xl">
         <div className="aspect-video flex items-center justify-center">
           <div className="text-center p-8">
-            <div className={`w-32 h-32 bg-gradient-to-br ${classData.status === 'completed' ? 'from-green-600/60 to-blue-600/60' : 'from-blue-600/60 to-red-600/60'} border border-gray-600/50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl backdrop-blur-xl`}>
+            <div className={`w-32 h-32 bg-gradient-to-br ${classData.status === 'completed' ? 'from-green-600/60 to-blue-600/60' : 'from-blue-600/60 to-red-600/60'} border border-white/[.1] rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl backdrop-blur-xl`}>
               {classData.status === 'completed' ? <Video className="h-16 w-16 text-white" /> : <Play className="h-16 w-16 text-white ml-2" />}
             </div>
             
@@ -161,7 +161,7 @@ const LiveClassPlayer = () => {
               
               <button
                 onClick={() => setShowQualityModal(true)}
-                className="flex items-center space-x-2 backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 text-gray-300 px-6 py-4 rounded-xl hover:bg-gray-800/60 transition-colors"
+                className="flex items-center space-x-2 backdrop-blur-xl bg-white/[.05] border border-white/[.1] text-gray-300 px-6 py-4 rounded-xl hover:bg-white/[.1] transition-colors"
               >
                 <Settings className="h-5 w-5" />
                 <span>Change Quality</span>
@@ -171,7 +171,7 @@ const LiveClassPlayer = () => {
         </div>
       </div>
 
-      <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl shadow-2xl p-6">
+      <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] rounded-2xl shadow-2xl p-6">
         <h2 className="text-xl font-semibold text-white mb-4">Class Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
@@ -217,7 +217,7 @@ const LiveClassPlayer = () => {
 
       {showQualityModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="backdrop-blur-2xl bg-gray-900/80 border border-gray-700/60 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
+          <div className="backdrop-blur-2xl bg-slate-900/[.85] border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
             <h2 className="text-xl font-bold text-white mb-4">Select Video Quality</h2>
             <p className="text-gray-300 mb-6">Choose the video quality based on your internet connection:</p>
             
@@ -229,7 +229,7 @@ const LiveClassPlayer = () => {
                   className={`w-full p-4 text-left rounded-xl border transition-all duration-300 transform hover:scale-105 backdrop-blur-lg ${
                     selectedQuality === option.value
                       ? 'border-blue-500/60 bg-blue-600/40 shadow-glow-blue'
-                      : 'border-gray-600/50 hover:border-gray-500/60 bg-gray-800/40'
+                      : 'border-slate-600 hover:border-slate-500 bg-slate-800/40'
                   }`}
                 >
                   <div className="flex justify-between items-center">
@@ -248,7 +248,7 @@ const LiveClassPlayer = () => {
             <div className="flex justify-end space-x-3 mt-6">
               <button
                 onClick={() => setShowQualityModal(false)}
-                className="px-4 py-2 text-gray-300 border border-gray-600/50 rounded-xl hover:bg-gray-800/40 transition-colors backdrop-blur-lg"
+                className="px-4 py-2 text-gray-300 border border-slate-600 rounded-xl hover:bg-slate-800/40 transition-colors backdrop-blur-lg"
               >
                 Cancel
               </button>

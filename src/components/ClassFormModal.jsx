@@ -49,7 +49,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-      <div className="backdrop-blur-2xl bg-gray-900/80 border border-gray-700/60 rounded-2xl p-4 sm:p-6 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in-scale">
+      <div className="backdrop-blur-2xl bg-slate-900/[.85] border border-slate-700 rounded-2xl p-4 sm:p-6 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in-scale">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg sm:text-xl font-bold text-white">{isEditing ? 'Edit Class' : 'Create New Class'}</h2>
           <button
@@ -68,7 +68,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
               name="title" 
               value={formData.title} 
               onChange={handleChange} 
-              className="w-full p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
+              className="w-full p-3 border border-slate-600 rounded-xl bg-slate-800/50 text-white backdrop-blur-lg text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
               placeholder="Enter class title"
               required 
             />
@@ -81,7 +81,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
               name="batchname" 
               value={formData.batchname} 
               onChange={handleChange} 
-              className="w-full p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
+              className="w-full p-3 border border-slate-600 rounded-xl bg-slate-800/50 text-white backdrop-blur-lg text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
               placeholder="Enter batch name"
               required 
             />
@@ -94,7 +94,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
               value={formData.streamlink} 
               onChange={handleChange} 
               rows="3"
-              className="w-full p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg text-sm sm:text-base resize-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
+              className="w-full p-3 border border-slate-600 rounded-xl bg-slate-800/50 text-white backdrop-blur-lg text-sm sm:text-base resize-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
               placeholder="Enter stream link"
               required 
             />
@@ -107,12 +107,12 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
               name="thumbnail" 
               value={formData.thumbnail} 
               onChange={handleChange} 
-              className="w-full p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
+              className="w-full p-3 border border-slate-600 rounded-xl bg-slate-800/50 text-white backdrop-blur-lg text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all" 
               placeholder="Enter thumbnail URL"
             />
           </div>
           
-          <hr className="border-gray-700/50"/>
+          <hr className="border-slate-700"/>
           
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Scheduled Start Time</label>
@@ -121,7 +121,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
               name="scheduledstarttime" 
               value={formData.scheduledstarttime} 
               onChange={handleChange} 
-              className="w-full p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg text-sm sm:text-base" 
+              className="w-full p-3 border border-slate-600 rounded-xl bg-slate-800/50 text-white backdrop-blur-lg text-sm sm:text-base" 
             />
           </div>
           
@@ -132,7 +132,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
               name="autostart" 
               checked={formData.autostart} 
               onChange={handleChange} 
-              className="w-4 h-4 text-blue-600 bg-gray-700/60 border-gray-600/50 rounded backdrop-blur-lg" 
+              className="w-4 h-4 text-blue-600 bg-slate-700/60 border-slate-600 rounded backdrop-blur-lg" 
             />
             <label htmlFor="autostart" className="text-sm text-gray-300">Auto-start at scheduled time</label>
           </div>
@@ -141,7 +141,7 @@ const ClassFormModal = ({ classItem, onSave, onClose }) => {
         <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 mt-6">
           <button 
             onClick={onClose} 
-            className="px-4 py-2 text-gray-300 border border-gray-600/50 rounded-xl hover:bg-gray-800/40 transition-colors backdrop-blur-lg text-sm order-2 sm:order-1"
+            className="px-4 py-2 text-gray-300 border border-slate-600 rounded-xl hover:bg-slate-800/40 transition-colors backdrop-blur-lg text-sm order-2 sm:order-1"
           >
             Cancel
           </button>

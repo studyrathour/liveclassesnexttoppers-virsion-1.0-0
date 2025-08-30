@@ -31,7 +31,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to Student View Link */}
         <div className="text-center mb-8">
@@ -44,7 +44,7 @@ const AdminLogin = () => {
         </div>
 
         {/* Login Form */}
-        <div className="backdrop-blur-xl bg-gray-900/40 border border-gray-700/50 rounded-2xl shadow-2xl p-8">
+        <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-gradient-to-br from-blue-600/30 to-purple-600/30 border border-blue-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl backdrop-blur-xl">
               <Shield className="h-10 w-10 text-blue-400" />
@@ -67,7 +67,7 @@ const AdminLogin = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all backdrop-blur-sm"
+                  className="w-full pl-10 pr-4 py-3 bg-black/20 border border-white/[.1] rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all backdrop-blur-sm"
                   placeholder="Enter admin email"
                   required
                 />
@@ -87,7 +87,7 @@ const AdminLogin = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all backdrop-blur-sm"
+                  className="w-full pl-10 pr-12 py-3 bg-black/20 border border-white/[.1] rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all backdrop-blur-sm"
                   placeholder="Enter password"
                   required
                 />
@@ -123,7 +123,7 @@ const AdminLogin = () => {
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-gray-700/50">
+          <div className="mt-6 pt-6 border-t border-white/[.1]">
             <p className="text-center text-xs text-gray-500">
               Authorized personnel only • Secure admin access
             </p>

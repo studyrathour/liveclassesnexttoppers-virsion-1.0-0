@@ -349,11 +349,11 @@ const AdminPanel = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-gray-600/70 hover:bg-gray-900/70">
+        <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-white/[.2] hover:bg-white/[.1]">
           <h3 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">Total Classes</h3>
           <p className="text-2xl sm:text-3xl font-bold text-white">{liveClasses.filter(cls => cls.status !== 'deleted').length}</p>
         </div>
-        <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-red-500/30 hover:bg-gray-900/70">
+        <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-red-500/30 hover:bg-white/[.1]">
           <h3 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">Live Now</h3>
           <div className="flex items-center">
             <p className="text-2xl sm:text-3xl font-bold text-red-400">{live.length}</p>
@@ -362,19 +362,19 @@ const AdminPanel = () => {
             )}
           </div>
         </div>
-        <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-blue-500/30 hover:bg-gray-900/70">
+        <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-blue-500/30 hover:bg-white/[.1]">
           <h3 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">Scheduled</h3>
           <p className="text-2xl sm:text-3xl font-bold text-blue-400">{scheduled.length}</p>
         </div>
-        <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-green-500/30 hover:bg-gray-900/70">
+        <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] p-4 sm:p-6 rounded-2xl shadow-2xl transition-all hover:border-green-500/30 hover:bg-white/[.1]">
           <h3 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">Completed</h3>
-          <p className="text-2xl sm:text-3xl font-bold text-green-400">{completed.length}</p>
+          <p className="text-2xl smtext-3xl font-bold text-green-400">{completed.length}</p>
         </div>
       </div>
 
       {/* Tabs */}
       <div className="flex justify-center mb-8">
-        <div className="flex space-x-1 sm:space-x-2 backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 p-1 sm:p-2 rounded-2xl shadow-2xl">
+        <div className="flex space-x-1 sm:space-x-2 backdrop-blur-xl bg-white/[.05] border border-white/[.1] p-1 sm:p-2 rounded-2xl shadow-2xl">
           {tabs.map(tab => {
             const Icon = tab.icon;
             return (
@@ -389,7 +389,7 @@ const AdminPanel = () => {
                         tab.color === 'green' ? 'bg-green-600/80 border-green-500/60 shadow-glow-green' :
                         'bg-gray-600/80 border-gray-500/60 shadow-lg shadow-gray-500/25'
                       } text-white transform scale-105 border`
-                    : 'text-gray-300 hover:text-white hover:bg-gray-800/40 border border-transparent'
+                    : 'text-gray-300 hover:text-white hover:bg-white/10 border border-transparent'
                 }`}
               >
                 {tab.id === 'live' && live.length > 0 ? (
@@ -402,7 +402,7 @@ const AdminPanel = () => {
                 <div className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-bold ${
                   activeTab === tab.id 
                     ? 'bg-white/20 text-white' 
-                    : 'bg-gray-700/60 text-gray-300'
+                    : 'bg-black/20 text-gray-300'
                 }`}>
                   {tab.count}
                 </div>
@@ -413,8 +413,8 @@ const AdminPanel = () => {
       </div>
 
       {/* Classes Table */}
-      <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden">
-        <div className="px-4 sm:px-6 py-4 border-b border-gray-700/50">
+      <div className="backdrop-blur-xl bg-white/[.05] border border-white/[.1] rounded-2xl shadow-2xl overflow-hidden">
+        <div className="px-4 sm:px-6 py-4 border-b border-white/[.1]">
           <h2 className="text-lg sm:text-xl font-semibold text-white">
             {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Classes ({getCurrentClasses().length})
           </h2>
@@ -426,7 +426,7 @@ const AdminPanel = () => {
           <div className="overflow-x-auto">
             {getCurrentClasses().length > 0 ? (
               <table className="w-full min-w-[800px]">
-                <thead className="bg-gray-800/40">
+                <thead className="bg-black/20">
                   <tr>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Class Details</th>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Batch</th>
@@ -436,16 +436,16 @@ const AdminPanel = () => {
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-700/50">
+                <tbody className="divide-y divide-white/[.1]">
                   {getCurrentClasses().map((classItem) => (
-                    <tr key={classItem.id} className="hover:bg-gray-800/40 transition-colors">
+                    <tr key={classItem.id} className="hover:bg-black/20 transition-colors">
                       <td className="px-3 sm:px-6 py-4">
                         <div className="flex items-center">
-                          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-gray-700/60 border border-gray-600/50 rounded-xl mr-3 sm:mr-4 flex-shrink-0 overflow-hidden backdrop-blur-lg">
+                          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-black/20 border border-white/[.1] rounded-xl mr-3 sm:mr-4 flex-shrink-0 overflow-hidden backdrop-blur-lg">
                             {classItem.thumbnail ? (
                               <img src={classItem.thumbnail} alt={classItem.title} className="h-full w-full rounded-xl object-cover" />
                             ) : (
-                              <div className="h-full w-full bg-gray-700/40 rounded-xl"></div>
+                              <div className="h-full w-full bg-slate-800/40 rounded-xl"></div>
                             )}
                           </div>
                           <div>
@@ -514,7 +514,7 @@ const AdminPanel = () => {
               </table>
             ) : (
               <div className="text-center py-12">
-                <div className="backdrop-blur-2xl bg-gray-900/60 border border-gray-700/50 rounded-2xl p-6 sm:p-8 mx-4 sm:mx-6">
+                <div className="backdrop-blur-xl bg-black/20 border border-white/10 rounded-2xl p-6 sm:p-8 mx-4 sm:mx-6">
                   <PlusCircle className="h-12 w-12 sm:h-16 sm:w-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-white mb-2">No {activeTab} classes found</h3>
                   <p className="text-gray-300 text-sm sm:text-base">
@@ -533,7 +533,7 @@ const AdminPanel = () => {
       {/* Upload Modal */}
       {showUploadModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="backdrop-blur-2xl bg-gray-900/80 border border-gray-700/60 rounded-2xl p-4 sm:p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
+          <div className="backdrop-blur-2xl bg-slate-900/[.85] border border-slate-700 rounded-2xl p-4 sm:p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
             <h2 className="text-lg sm:text-xl font-bold text-white mb-4">Upload to "{uploadTarget.charAt(0).toUpperCase() + uploadTarget.slice(1)}"</h2>
             <div className="mb-4">
               <p className="text-sm text-gray-300 mb-2">Excel file should have 4 columns:</p>
@@ -550,12 +550,12 @@ const AdminPanel = () => {
               type="file" 
               accept=".xlsx,.xls" 
               onChange={(e) => handleFileUpload(e, false, uploadTarget)} 
-              className="w-full mb-4 p-3 border border-gray-600/50 rounded-xl bg-gray-800/40 text-white backdrop-blur-lg text-sm" 
+              className="w-full mb-4 p-3 border border-slate-600 rounded-xl bg-slate-800/50 text-white backdrop-blur-lg text-sm" 
             />
             <div className="flex justify-end space-x-2">
               <button 
                 onClick={() => setShowUploadModal(false)} 
-                className="px-4 py-2 text-gray-300 border border-gray-600/50 rounded-xl hover:bg-gray-800/40 transition-colors backdrop-blur-lg text-sm"
+                className="px-4 py-2 text-gray-300 border border-slate-600 rounded-xl hover:bg-slate-800/40 transition-colors backdrop-blur-lg text-sm"
               >
                 Cancel
               </button>

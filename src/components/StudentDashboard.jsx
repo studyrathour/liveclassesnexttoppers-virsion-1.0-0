@@ -195,7 +195,7 @@ const StudentDashboard = () => {
           <button
             onClick={() => handleJoinClass(classItem)}
             disabled={type === 'upcoming'}
-            className="watch-btn"
+            className={`watch-btn ${type === 'live' ? 'btn-live' : type === 'completed' ? 'btn-completed' : ''}`}
           >
             {type === 'live' && <><PlayCircle size={20} /><span>Watch Live</span></>}
             {type === 'completed' && <><History size={20} /><span>Watch Recording</span></>}
@@ -277,7 +277,7 @@ const StudentDashboard = () => {
                 return (
                     <button 
                         key={tab.id}
-                        className={`tab ${activeTab === tab.id ? 'active' : ''}`}
+                        className={`tab tab-${tab.id} ${activeTab === tab.id ? 'active' : ''}`}
                         onClick={() => setActiveTab(tab.id)}
                     >
                         <Icon size={16} /> {tab.label}
@@ -294,7 +294,7 @@ const StudentDashboard = () => {
 
         {showQualityModal && selectedClass && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-            <div className="backdrop-blur-2xl bg-gray-900/80 border border-gray-700/60 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
+            <div className="backdrop-blur-2xl bg-slate-900/[.85] border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
               <h2 className="text-xl font-bold text-white mb-2">Select Video Quality</h2>
               <p className="text-gray-300 mb-1">For: <span className="font-semibold text-white">{cleanTitle(selectedClass.title)}</span></p>
               <p className="text-gray-400 mb-6 text-sm">Choose the quality based on your internet connection.</p>
@@ -307,14 +307,13 @@ const StudentDashboard = () => {
                     className={`w-full p-4 text-left rounded-xl border transition-all duration-300 transform hover:scale-105 backdrop-blur-lg ${
                       selectedQuality === option.value
                         ? 'border-blue-500/60 bg-blue-600/40 shadow-glow-blue'
-                        : 'border-gray-600/50 hover:border-gray-500/60 bg-gray-800/40'
+                        : 'border-slate-600 hover:border-slate-500 bg-slate-800/40'
                     }`}
                   >
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="font-medium text-white">{option.label}</p>
-                        <p className="text-sm text-gray-300">{option.description}</p>
-                      </div>
+                        <p className="text-sm text-gray-300">{option.description}</p>                      </div>
                       {selectedQuality === option.value && (
                         <div className="w-4 h-4 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"></div>
                       )}
@@ -326,7 +325,7 @@ const StudentDashboard = () => {
               <div className="flex justify-end space-x-3 mt-6">
                 <button
                   onClick={() => setShowQualityModal(false)}
-                  className="px-4 py-2 text-gray-300 border border-gray-600/50 rounded-xl hover:bg-gray-800/40 transition-colors backdrop-blur-lg"
+                  className="px-4 py-2 text-gray-300 border border-slate-600 rounded-xl hover:bg-slate-800/40 transition-colors backdrop-blur-lg"
                 >
                   Cancel
                 </button>
