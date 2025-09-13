@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Bell, X, Info } from 'lucide-react';
 
@@ -7,7 +7,6 @@ const Notifications = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const firstLoad = useRef(true);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -21,11 +20,6 @@ const Notifications = () => {
           const readNotifications = JSON.parse(localStorage.getItem('readNotifications') || '[]');
           const newUnreadCount = processedData.filter(n => !readNotifications.includes(n.id)).length;
           setUnreadCount(newUnreadCount);
-
-          if (firstLoad.current && newUnreadCount > 0) {
-            setIsModalOpen(true);
-            firstLoad.current = false;
-          }
         }
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
