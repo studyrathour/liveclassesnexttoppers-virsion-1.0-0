@@ -22,8 +22,8 @@
     --green-shadow-hover: 0 15px 35px rgba(34, 197, 94, 0.5);
     
     --dark-bg: #050505;
-    --white-glass-bg: rgba(255, 255, 255, 0.1);
-    --white-glass-border: rgba(255, 255, 255, 0.2);
+    --white-glass-bg: rgba(255, 255, 255, 0.05);
+    --white-glass-border: rgba(255, 255, 255, 0.1);
     --text-primary: #f8fafc;
     --text-secondary: #a0a9c0;
     --text-accent: #a78bfa;
@@ -68,79 +68,12 @@ body::before {
     z-index: 1;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 60px;
-    position: relative;
-}
-
-.header::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 800px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
-    z-index: -1;
-    filter: blur(100px);
-}
-
-.header h1 {
-    font-size: clamp(3.5rem, 8vw, 6rem);
-    font-weight: 900;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 30%, #a78bfa 70%, #818cf8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.05em;
-    line-height: 0.9;
-    text-shadow: 0 0 80px rgba(255, 255, 255, 0.1);
-    position: relative;
-}
-
-.header .brand-icon {
-    display: inline-block;
-    font-size: 0.8em;
-    margin-right: 15px;
-    background: var(--blue-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-.header .subtitle {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--text-accent);
-    margin-bottom: 15px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.9;
-}
-
-.header .tagline {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    font-weight: 400;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-.stats-bar {
+.student-header {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin: 40px 0 60px;
-    padding: 30px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 10px 20px;
     background: var(--white-glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -149,25 +82,151 @@ body::before {
     box-shadow: var(--shadow-primary);
 }
 
-.stat-item {
-    text-align: center;
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 900;
+.logo-icon {
+    color: var(--text-accent);
+}
+
+.app-title {
+    font-size: 1.5rem;
+    font-weight: 800;
     color: var(--text-primary);
-    display: block;
-    line-height: 1;
 }
 
-.stat-label {
-    font-size: 0.9rem;
+.notification-bell {
+    position: relative;
+    background: transparent;
+    border: none;
     color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 8px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.notification-bell:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--dark-bg);
+}
+
+.notification-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 500;
+}
+
+.notification-modal-content {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    background: #0f1014;
+    border: 1px solid var(--white-glass-border);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    max-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: slide-in-from-right 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.notification-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--white-glass-border);
+}
+
+.notification-modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+}
+
+.notification-modal-body {
+    padding: 8px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.notification-item {
+    padding: 16px;
+    border-bottom: 1px solid var(--white-glass-border);
+    transition: background-color 0.3s;
+}
+.notification-item:last-child {
+    border-bottom: none;
+}
+.notification-item:hover {
+    background-color: rgba(255,255,255,0.03);
+}
+
+.notification-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+.notification-title {
     font-weight: 600;
+    color: var(--text-primary);
+}
+
+.notification-message {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.no-notifications {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+.no-notifications p {
+    margin-top: 16px;
 }
 
 .tabs {
@@ -476,19 +535,15 @@ body::before {
     50% { transform: translateY(-8px); }
 }
 
-.no-data h3 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    color: var(--text-primary);
-}
-
-.no-data p {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    max-width: 400px;
-    margin: 0 auto;
-    line-height: 1.6;
+@keyframes slide-in-from-right {
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .tab-content {
@@ -505,14 +560,9 @@ body::before {
         gap: 25px;
     }
     
-    .header h1 {
-        font-size: 3rem;
-    }
-    
-    .stats-bar {
+    .student-header {
         flex-direction: column;
         gap: 20px;
-        text-align: center;
     }
     
     .tabs {
@@ -543,7 +593,7 @@ body::before {
 }
 
 @media (max-width: 480px) {
-    .header {
+    .student-header {
         margin-bottom: 40px;
     }
 

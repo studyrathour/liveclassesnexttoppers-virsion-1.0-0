@@ -77,11 +77,6 @@ const AdminPanel = () => {
     return title ? title.replace(/⚡/g, '').trim() : '';
   };
 
-  const extractVideoQuality = (url) => {
-    const match = url.match(/index_(\d+)\.m3u8/);
-    return match ? parseInt(match[1]) : 3;
-  };
-
   const extractM3U8Link = (fullUrl) => {
     const urlMatch = fullUrl.match(/url=(.+)/);
     return urlMatch ? decodeURIComponent(urlMatch[1]) : fullUrl;
@@ -135,7 +130,6 @@ const AdminPanel = () => {
           batchname: cleanTitle(row.batchName || ''),
           streamlink: row.streamLink || '',
           m3u8link: extractM3U8Link(row.streamLink || ''),
-          defaultquality: extractVideoQuality(extractM3U8Link(row.streamLink || '')),
           status: targetStatus,
           starttime: targetStatus === 'live' ? new Date().toISOString() : null,
           scheduledstarttime: null,
@@ -174,7 +168,6 @@ const AdminPanel = () => {
       streamlink: formData.streamlink,
       thumbnail: formData.thumbnail,
       m3u8link: extractM3U8Link(formData.streamlink),
-      defaultquality: extractVideoQuality(extractM3U8Link(formData.streamlink)),
       scheduledstarttime: formData.scheduledstarttime ? new Date(formData.scheduledstarttime).toISOString() : null,
       autostart: formData.autostart,
     };
@@ -281,17 +274,6 @@ const AdminPanel = () => {
       case 'completed': return 'bg-green-600/80 border-green-500/60 text-white';
       case 'deleted': return 'bg-gray-600/80 border-gray-500/60 text-white';
       default: return 'bg-gray-600/60 border-gray-500/50 text-white';
-    }
-  };
-
-  const getQualityText = (quality) => {
-    switch (quality) {
-      case 1: return '240p';
-      case 2: return '360p';
-      case 3: return '480p';
-      case 4:
-      case 5: return '720p';
-      default: return '480p';
     }
   };
 
@@ -430,7 +412,6 @@ const AdminPanel = () => {
                   <tr>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Class Details</th>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Batch</th>
-                    <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Quality</th>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Schedule</th>
                     <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
@@ -454,7 +435,6 @@ const AdminPanel = () => {
                         </div>
                       </td>
                       <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-300">{classItem.batchname}</td>
-                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-300">{getQualityText(classItem.defaultquality)}</td>
                       <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 sm:px-3 py-1 text-xs font-medium rounded-full border backdrop-blur-lg ${getStatusColor(classItem.status)}`}>
                           {classItem.status}

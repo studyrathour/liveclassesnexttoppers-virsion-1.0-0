@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings, Users, ExternalLink, Play, Video } from 'lucide-react';
+import { ArrowLeft, Users, ExternalLink, Play, Video } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
 const LiveClassPlayer = () => {
   const { classId } = useParams();
   const navigate = useNavigate();
   const [classData, setClassData] = useState(null);
-  const [selectedQuality, setSelectedQuality] = useState(null);
-  const [showQualityModal, setShowQualityModal] = useState(true);
 
   useEffect(() => {
     loadClassData();
@@ -25,7 +23,6 @@ const LiveClassPlayer = () => {
       console.error('Error fetching class data:', error);
     } else {
       setClassData(data);
-      setSelectedQuality(data.defaultquality);
     }
   };
 
@@ -33,35 +30,19 @@ const LiveClassPlayer = () => {
     return title ? title.replace(/⚡/g, '').trim() : '';
   };
 
-  const getQualityOptions = () => {
-    return [
-      { value: 1, label: '240p', description: 'Data Saver • Low bandwidth' },
-      { value: 2, label: '360p', description: 'Low Quality • Basic streaming' },
-      { value: 3, label: '480p', description: 'Standard Quality • Recommended' },
-      { value: 4, label: '720p', description: 'High Quality • Clear video' },
-      { value: 5, label: '720p HD', description: 'HD Quality • Best experience' }
-    ];
-  };
-
-  const buildVideoUrl = (quality) => {
+  const buildVideoUrl = () => {
     if (!classData?.m3u8link) return '';
     
     const prefix = classData.status === 'completed'
       ? 'https://edumastervideoplarerwatch.netlify.app/rec/'
       : 'https://edumastervideoplarerwatch.netlify.app/live/';
       
-    const updatedM3u8 = classData.m3u8link.replace(/index_\d+\.m3u8/, `index_${quality}.m3u8`);
-    return `${prefix}${encodeURIComponent(updatedM3u8)}`;
-  };
-
-  const handleQualitySelect = (quality) => {
-    setSelectedQuality(quality);
-setShowQualityModal(false);
+    return `${prefix}${encodeURIComponent(classData.m3u8link)}`;
   };
 
   const openVideoPlayer = () => {
-    if (selectedQuality) {
-      const videoUrl = buildVideoUrl(selectedQuality);
+    const videoUrl = buildVideoUrl();
+    if (videoUrl) {
       window.open(videoUrl, '_blank', 'noopener,noreferrer');
     }
   };
@@ -123,14 +104,6 @@ setShowQualityModal(false);
               </span>
             </div>
           </div>
-          
-          <button
-            onClick={() => setShowQualityModal(true)}
-            className="flex items-center space-x-2 backdrop-blur-xl bg-white/[.05] border border-white/[.1] text-gray-300 px-4 py-3 rounded-xl hover:bg-white/[.1] transition-colors"
-          >
-            <Settings className="h-4 w-4" />
-            <span>Quality: {getQualityOptions().find(q => q.value === selectedQuality)?.label}</span>
-          </button>
         </div>
       </div>
 
@@ -143,28 +116,16 @@ setShowQualityModal(false);
             
             <h2 className="text-2xl font-bold text-white mb-3">{classData.status === 'completed' ? 'Recording Available' : 'Ready to Watch'}</h2>
             <p className="text-gray-300 mb-6 max-w-md mx-auto">
-              Click the button below to open the player in a new tab. 
-              Selected quality: <span className="text-blue-400 font-semibold">
-                {getQualityOptions().find(q => q.value === selectedQuality)?.label}
-              </span>
+              Click the button below to open the player in a new tab.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={openVideoPlayer}
-                disabled={!selectedQuality}
-                className={`flex items-center space-x-2 px-8 py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 backdrop-blur-lg ${classData.status === 'completed' ? 'bg-green-600/80 border-green-500/60 text-white hover:bg-green-600/90 shadow-lg shadow-green-500/25 hover:shadow-glow-green' : 'bg-red-600/80 border-red-500/60 text-white hover:bg-red-600/90 shadow-lg shadow-red-500/25 hover:shadow-glow-red'}`}
+                className={`flex items-center space-x-2 px-8 py-4 rounded-xl transition-all transform hover:scale-105 backdrop-blur-lg ${classData.status === 'completed' ? 'bg-green-600/80 border-green-500/60 text-white hover:bg-green-600/90 shadow-lg shadow-green-500/25 hover:shadow-glow-green' : 'bg-red-600/80 border-red-500/60 text-white hover:bg-red-600/90 shadow-lg shadow-red-500/25 hover:shadow-glow-red'}`}
               >
                 <ExternalLink className="h-5 w-5" />
                 <span>{classData.status === 'completed' ? 'Open Recording' : 'Open Video Player'}</span>
-              </button>
-              
-              <button
-                onClick={() => setShowQualityModal(true)}
-                className="flex items-center space-x-2 backdrop-blur-xl bg-white/[.05] border border-white/[.1] text-gray-300 px-6 py-4 rounded-xl hover:bg-white/[.1] transition-colors"
-              >
-                <Settings className="h-5 w-5" />
-                <span>Change Quality</span>
               </button>
             </div>
           </div>
@@ -183,20 +144,14 @@ setShowQualityModal(false);
               <h3 className="font-medium text-gray-300 mb-1">Status</h3>
               <p className="text-white capitalize">{classData.status}</p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-300 mb-1">Video Quality</h3>
-              <p className="text-white">
-                {getQualityOptions().find(q => q.value === selectedQuality)?.label} - {getQualityOptions().find(q => q.value === selectedQuality)?.description}
-              </p>
-            </div>
-          </div>
-          <div className="space-y-4">
-            <div>
+             <div>
               <h3 className="font-medium text-gray-300 mb-1">Start Time</h3>
               <p className="text-white">
                 {new Date(classData.starttime).toLocaleString()}
               </p>
             </div>
+          </div>
+          <div className="space-y-4">
             {classData.endtime && (
               <div>
                 <h3 className="font-medium text-gray-300 mb-1">End Time</h3>
@@ -214,59 +169,6 @@ setShowQualityModal(false);
           </div>
         </div>
       </div>
-
-      {showQualityModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="backdrop-blur-2xl bg-slate-900/[.85] border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in-scale">
-            <h2 className="text-xl font-bold text-white mb-4">Select Video Quality</h2>
-            <p className="text-gray-300 mb-6">Choose the video quality based on your internet connection:</p>
-            
-            <div className="space-y-3">
-              {getQualityOptions().map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => handleQualitySelect(option.value)}
-                  className={`w-full p-4 text-left rounded-xl border transition-all duration-300 transform hover:scale-105 backdrop-blur-lg ${
-                    selectedQuality === option.value
-                      ? 'border-blue-500/60 bg-blue-600/40 shadow-glow-blue'
-                      : 'border-slate-600 hover:border-slate-500 bg-slate-800/40'
-                  }`}
-                >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-white">{option.label}</p>
-                      <p className="text-sm text-gray-300">{option.description}</p>
-                    </div>
-                    {selectedQuality === option.value && (
-                      <div className="w-4 h-4 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"></div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-            
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                onClick={() => setShowQualityModal(false)}
-                className="px-4 py-2 text-gray-300 border border-slate-600 rounded-xl hover:bg-slate-800/40 transition-colors backdrop-blur-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setShowQualityModal(false);
-                  openVideoPlayer();
-                }}
-                disabled={!selectedQuality}
-                className={`text-white px-6 py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 flex items-center space-x-2 backdrop-blur-lg ${classData.status === 'completed' ? 'bg-green-600/80 border-green-500/60 hover:bg-green-600/90 shadow-lg shadow-green-500/25 hover:shadow-glow-green' : 'bg-blue-600/80 border-blue-500/60 hover:bg-blue-600/90 shadow-lg shadow-blue-500/25 hover:shadow-glow-blue'}`}
-              >
-                <ExternalLink className="h-4 w-4" />
-                <span>{classData.status === 'completed' ? 'Watch Recording' : 'Watch Live'}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
