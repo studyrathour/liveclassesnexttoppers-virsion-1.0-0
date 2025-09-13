@@ -1,5 +1,3 @@
-# This configuration file instructs Netlify on how to build the site.
-# It ensures 'yarn' is used as the package manager and sets a stable Node.js version.
 [build]
   command = "yarn build"
   publish = "dist"
