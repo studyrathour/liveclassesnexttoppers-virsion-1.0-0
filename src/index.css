@@ -63,7 +63,7 @@ body::before {
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 20px 15px; /* Smaller padding */
     position: relative;
     z-index: 1;
 }
@@ -72,12 +72,12 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-    padding: 10px 20px;
+    margin-bottom: 30px; /* Smaller margin */
+    padding: 8px 16px; /* Smaller padding */
     background: var(--white-glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 25px;
+    border-radius: 20px; /* Smaller radius */
     border: 1px solid var(--white-glass-border);
     box-shadow: var(--shadow-primary);
 }
@@ -85,7 +85,7 @@ body::before {
 .logo-title {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px; /* Smaller gap */
 }
 
 .logo-icon {
@@ -93,7 +93,7 @@ body::before {
 }
 
 .app-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem; /* Smaller font size */
     font-weight: 800;
     color: var(--text-primary);
 }
@@ -131,6 +131,7 @@ body::before {
     border: 2px solid var(--dark-bg);
 }
 
+/* --- NOTIFICATION PANEL - UNCHANGED --- */
 .notification-modal-overlay {
     position: fixed;
     inset: 0;
@@ -147,7 +148,7 @@ body::before {
     border: 1px solid var(--white-glass-border);
     border-radius: 20px;
     width: 90%;
-    max-width: 420px;
+    max-width: 500px;
     max-height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
@@ -228,20 +229,21 @@ body::before {
 .no-notifications p {
     margin-top: 16px;
 }
+/* --- END NOTIFICATION PANEL --- */
 
 .tabs {
     display: flex;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 60px;
+    gap: 6px; /* Smaller gap */
+    margin-bottom: 40px; /* Smaller margin */
     background: var(--white-glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 25px;
-    padding: 10px;
+    border-radius: 20px; /* Smaller radius */
+    padding: 8px; /* Smaller padding */
     border: 1px solid var(--white-glass-border);
     box-shadow: var(--shadow-primary);
-    max-width: 600px;
+    max-width: 550px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -250,19 +252,19 @@ body::before {
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    padding: 18px 35px;
-    border-radius: 20px;
+    padding: 10px 20px; /* Smaller padding */
+    border-radius: 16px; /* Smaller radius */
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.8rem; /* Smaller font size */
     letter-spacing: 0.05em;
     position: relative;
     overflow: hidden;
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px; /* Smaller gap */
 }
 
 .tab.active {
@@ -291,16 +293,17 @@ body::before {
 
 .lectures-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    margin-bottom: 80px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 340px)); /* Smaller cards */
+    justify-content: center;
+    gap: 25px; /* Smaller gap */
+    margin-bottom: 60px;
 }
 
 .lecture-card {
     background: var(--white-glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 25px;
+    border-radius: 20px; /* Smaller radius */
     overflow: hidden;
     border: 1px solid var(--white-glass-border);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -323,7 +326,7 @@ body::before {
 }
 
 .lecture-card:hover {
-    transform: translateY(-10px) scale(1.02);
+    transform: translateY(-8px) scale(1.02); /* Smaller hover effect */
     box-shadow: var(--shadow-hover);
     border-color: rgba(255, 255, 255, 0.25);
 }
@@ -335,7 +338,7 @@ body::before {
 .lecture-thumbnail {
     position: relative;
     width: 100%;
-    height: 220px;
+    height: 160px; /* Smaller height */
     overflow: hidden;
     background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 50%, #1e40af 100%);
 }
@@ -354,28 +357,28 @@ body::before {
 
 .live-indicator {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    right: 12px;
     background: linear-gradient(135deg, #ff4757, #ff3742);
     color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.7rem;
+    padding: 6px 12px; /* Smaller padding */
+    border-radius: 16px;
+    font-size: 0.6rem; /* Smaller font size */
     font-weight: 800;
     animation: livePulse 2s infinite;
     box-shadow: 0 8px 25px rgba(255, 71, 87, 0.6);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
 }
 
 .live-indicator::before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: white;
     animation: liveBlink 1s infinite;
@@ -392,13 +395,13 @@ body::before {
 }
 
 .lecture-content {
-    padding: 30px;
+    padding: 20px; /* Smaller padding */
 }
 
 .lecture-title {
-    font-size: 1.4rem;
+    font-size: 1.1rem; /* Smaller font size */
     font-weight: 800;
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Smaller margin */
     color: var(--text-primary);
     line-height: 1.3;
     letter-spacing: -0.02em;
@@ -406,14 +409,14 @@ body::before {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 3.9rem; /* 1.4rem * 1.3 * 2 lines */
+    min-height: 2.86rem; /* 1.1rem * 1.3 * 2 lines */
 }
 
 .lecture-meta {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 25px;
+    gap: 10px; /* Smaller gap */
+    margin-bottom: 20px; /* Smaller margin */
 }
 
 .meta-item {
@@ -421,17 +424,17 @@ body::before {
     align-items: center;
     gap: 10px;
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Smaller font size */
     font-weight: 500;
-    padding: 10px 14px;
+    padding: 8px 12px; /* Smaller padding */
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .meta-icon {
     font-size: 1rem;
-    width: 18px;
+    width: 16px;
     text-align: center;
     color: var(--text-accent);
 }
@@ -440,9 +443,9 @@ body::before {
     width: 100%;
     color: white;
     border: none;
-    padding: 16px;
-    border-radius: 16px;
-    font-size: 1rem;
+    padding: 14px; /* Smaller padding */
+    border-radius: 14px; /* Smaller radius */
+    font-size: 0.9rem; /* Smaller font size */
     font-weight: 800;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -507,8 +510,8 @@ body::before {
 .no-data {
     text-align: center;
     color: var(--text-secondary);
-    padding: 80px 40px;
-    border-radius: 25px;
+    padding: 60px 30px; /* Smaller padding */
+    border-radius: 20px;
     background: var(--white-glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -517,15 +520,15 @@ body::before {
 }
 
 .no-data-icon {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 30px;
+    width: 100px; /* Smaller icon */
+    height: 100px; /* Smaller icon */
+    margin: 0 auto 25px;
     background: var(--blue-gradient);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     box-shadow: 0 15px 50px rgba(59, 130, 246, 0.3);
     animation: float 3s ease-in-out infinite;
 }
@@ -584,17 +587,17 @@ body::before {
     }
 
     .container {
-        padding: 30px 15px;
+        padding: 20px 15px;
     }
 
     .lecture-content {
-        padding: 25px;
+        padding: 20px;
     }
 }
 
 @media (max-width: 480px) {
     .student-header {
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
 
     .lectures-grid {
@@ -602,11 +605,11 @@ body::before {
     }
 
     .lecture-thumbnail {
-        height: 200px;
+        height: 180px;
     }
 
     .lecture-content {
-        padding: 20px;
+        padding: 18px;
     }
 }
 
